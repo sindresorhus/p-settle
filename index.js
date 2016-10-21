@@ -1,7 +1,5 @@
 'use strict';
-module.exports = iterable => new Promise(resolve => {
-	const input = Array.from(iterable);
-
+module.exports = input => new Promise(resolve => {
 	if (input.length === 0) {
 		resolve([]);
 		return;
