@@ -6,9 +6,21 @@ test('main', async t => {
 	t.deepEqual(
 		await m([delay(100).then(() => 1), 2, Promise.reject(3)]),
 		[
-			{value: 1},
-			{value: 2},
-			{reason: 3}
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: 1
+			},
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: 2
+			},
+			{
+				isFulfilled: false,
+				isRejected: true,
+				reason: 3
+			}
 		]
 	);
 });

@@ -24,9 +24,12 @@
     "settled",
     "resolved",
     "iterator",
+    "fulfill",
+    "reject",
     "fulfilled",
     "rejected",
     "reflect",
+    "inspect",
     "error",
     "async",
     "await",
@@ -36,6 +39,9 @@
     "parallel",
     "bluebird"
   ],
+  "dependencies": {
+    "p-reflect": "^1.0.0"
+  },
   "devDependencies": {
     "ava": "*",
     "delay": "^1.3.1",
