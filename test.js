@@ -2,7 +2,6 @@ import test from 'ava';
 import delay from 'delay';
 import mock from 'mock-require';
 import realPLimit from 'p-limit';
-import m from '.';
 
 let limitCalls = [];
 mock('p-limit', concurrency => {
@@ -16,6 +15,8 @@ mock('p-limit', concurrency => {
 	};
 	return mockLimit;
 });
+
+const m = mock.reRequire('.');
 
 test('main', async t => {
 	t.deepEqual(
