@@ -1,9 +1,10 @@
 import test from 'ava';
 import delay from 'delay';
-import m from './';
+import m from '.';
 
 test('main', async t => {
 	t.deepEqual(
+		// eslint-disable-next-line prefer-promise-reject-errors
 		await m([delay(100).then(() => 1), 2, Promise.reject(3)]),
 		[
 			{
