@@ -40,7 +40,8 @@
     "bluebird"
   ],
   "dependencies": {
-    "p-reflect": "^1.0.0"
+    "p-reflect": "^1.0.0",
+    "p-limit": "^1.2.0"
   },
   "devDependencies": {
     "ava": "*",
