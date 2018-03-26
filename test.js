@@ -2,7 +2,7 @@ import test from 'ava';
 import delay from 'delay';
 import mock from 'mock-require';
 import realPLimit from 'p-limit';
-import m from './';
+import m from '.';
 
 let limitCalls = [];
 mock('p-limit', concurrency => {
@@ -19,6 +19,7 @@ mock('p-limit', concurrency => {
 
 test('main', async t => {
 	t.deepEqual(
+		// eslint-disable-next-line prefer-promise-reject-errors
 		await m([delay(100).then(() => 1), 2, Promise.reject(3)]),
 		[
 			{

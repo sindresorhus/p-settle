@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save p-settle
+$ npm install p-settle
 ```
 
 
@@ -19,7 +19,7 @@ const fs = promisify(require('fs'));
 
 const files = [
 	'a.txt',
-	'b.txt' // doesn't exist
+	'b.txt' // Doesn't exist
 ].map(x => fs.readFile(x, 'utf8'));
 
 pSettle(files).then(result => {
