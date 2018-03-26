@@ -42,7 +42,7 @@ pSettle(files).then(result => {
 
 ## API
 
-### pSettle(input)
+### pSettle(input, [options])
 
 Returns a `Promise` that is fulfilled when all promises in `input` are settled.
 
@@ -55,6 +55,18 @@ The fulfilled value is an array of objects with the following properties:
 #### input
 
 Type: `Iterable<Promise|any>`
+
+#### options
+
+Type: `Object`
+
+##### concurrency
+
+Type: `number`<br>
+Default: `Infinity`<br>
+Minimum: `1`
+
+Number of concurrently pending promises.
 
 
 ## Related
