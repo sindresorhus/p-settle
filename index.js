@@ -1,8 +1,9 @@
 'use strict';
 const pReflect = require('p-reflect');
-const pLimit = require('p-limit');
 
 module.exports = (iterable, opts) => {
+	const pLimit = require('p-limit');
+
 	opts = Object.assign({
 		concurrency: Infinity
 	}, opts);
