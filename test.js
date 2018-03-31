@@ -1,6 +1,22 @@
 import test from 'ava';
 import delay from 'delay';
-import m from '.';
+import mock from 'mock-require';
+import realPLimit from 'p-limit';
+
+let limitCalls = [];
+mock('p-limit', concurrency => {
+	const limit = realPLimit(concurrency);
+	const mockLimit = itemFunction => {
+		limitCalls.push({
+			concurrency,
+			item: itemFunction()
+		});
+		return limit(itemFunction);
+	};
+	return mockLimit;
+});
+
+const m = mock.reRequire('.');
 
 test('main', async t => {
 	t.deepEqual(
@@ -24,6 +40,28 @@ test('main', async t => {
 			}
 		]
 	);
+});
+
+test('concurrency and item are passed to p-limit', async t => {
+	limitCalls = [];
+
+	const arraySize = 100;
+	const concurrency = 4;
+	const array = new Array(arraySize).fill(0).map((_, i) => Promise.resolve(i));
+	const resolvedCalls = new Array(arraySize).fill(0).map(() => ({concurrency}));
+
+	await m(array, {concurrency});
+
+	await limitCalls.map(limitCall => limitCall.item).forEach((item, index) => {
+		item.then(data => {
+			resolvedCalls[index].item = data;
+		});
+	});
+
+	await t.deepEqual(resolvedCalls, new Array(arraySize).fill(0).map((_, item) => ({
+		concurrency,
+		item
+	})));
 });
 
 test('handles empty iterable', async t => {
