@@ -6,22 +6,25 @@ import realPLimit from 'p-limit';
 let limitCalls = [];
 mock('p-limit', concurrency => {
 	const limit = realPLimit(concurrency);
+
 	const mockLimit = itemFunction => {
 		limitCalls.push({
 			concurrency,
 			item: itemFunction()
 		});
+
 		return limit(itemFunction);
 	};
+
 	return mockLimit;
 });
 
-const m = mock.reRequire('.');
+const pSettle = mock.reRequire('.');
 
 test('main', async t => {
 	t.deepEqual(
 		// eslint-disable-next-line prefer-promise-reject-errors
-		await m([delay(100).then(() => 1), 2, Promise.reject(3)]),
+		await pSettle([delay(100).then(() => 1), 2, Promise.reject(3)]),
 		[
 			{
 				isFulfilled: true,
@@ -50,7 +53,7 @@ test('concurrency and item are passed to p-limit', async t => {
 	const array = new Array(arraySize).fill(0).map((_, i) => Promise.resolve(i));
 	const resolvedCalls = new Array(arraySize).fill(0).map(() => ({concurrency}));
 
-	await m(array, {concurrency});
+	await pSettle(array, {concurrency});
 
 	await limitCalls.map(limitCall => limitCall.item).forEach((item, index) => {
 		item.then(data => {
@@ -65,5 +68,5 @@ test('concurrency and item are passed to p-limit', async t => {
 });
 
 test('handles empty iterable', async t => {
-	t.deepEqual(await m([]), []);
+	t.deepEqual(await pSettle([]), []);
 });

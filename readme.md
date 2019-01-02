@@ -17,26 +17,28 @@ const pSettle = require('p-settle');
 const promisify = require('pify');
 const fs = promisify(require('fs'));
 
-const files = [
-	'a.txt',
-	'b.txt' // Doesn't exist
-].map(x => fs.readFile(x, 'utf8'));
+(async () => {
+	const files = [
+		'a.txt',
+		'b.txt' // Doesn't exist
+	].map(x => fs.readFile(x, 'utf8'));
 
-pSettle(files).then(result => {
-	console.log(result);
+	console.log(await pSettle(files));
 	/*
-	[{
-		isFulfilled: true,
-		isRejected: false,
-		value: '🦄'
-	},
-	{
-		isFulfilled: false,
-		isRejected: true,
-		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
-	}]
+	[
+		{
+			isFulfilled: true,
+			isRejected: false,
+			value: '🦄'
+		},
+		{
+			isFulfilled: false,
+			isRejected: true,
+			reason: [Error: ENOENT: no such file or directory, open 'b.txt']
+		}
+	]
 	*/
-});
+})();
 ```
 
 
@@ -54,7 +56,7 @@ The fulfilled value is an array of objects with the following properties:
 
 #### input
 
-Type: `Iterable<Promise|any>`
+Type: `Array<Promise|any>`
 
 #### options
 
