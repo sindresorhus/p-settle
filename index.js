@@ -2,7 +2,7 @@
 const pReflect = require('p-reflect');
 const pLimit = require('p-limit');
 
-module.exports = (iterable, options) => {
+const pSettle = (iterable, options) => {
 	options = Object.assign({
 		concurrency: Infinity
 	}, options);
@@ -15,3 +15,6 @@ module.exports = (iterable, options) => {
 
 	return Promise.all(iterable.map(item => pReflect(limit(() => item))));
 };
+
+module.exports = pSettle;
+module.exports.default = pSettle;
