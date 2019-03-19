@@ -1,6 +1,6 @@
 {
 	"name": "p-settle",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "Settle promises concurrently and get their fulfillment value or rejection reason",
 	"license": "MIT",
 	"repository": "sindresorhus/p-settle",
