@@ -12,7 +12,7 @@ export interface Options {
 /**
 Settle promises concurrently and get their fulfillment value or rejection reason.
 
-@returns Is fulfilled when all promises in `promises` are settled.
+@returns A promise that is fulfilled when all promises in `promises` are settled.
 
 @example
 ```
