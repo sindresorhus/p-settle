@@ -24,7 +24,7 @@ const pSettle = mock.reRequire('.');
 test('main', async t => {
 	t.deepEqual(
 		// eslint-disable-next-line prefer-promise-reject-errors
-		await pSettle([delay(100).then(() => 1), 2, Promise.reject(3)]),
+		await pSettle([delay(100, {value: 1}), 2, Promise.reject(3)]),
 		[
 			{
 				isFulfilled: true,
@@ -50,7 +50,7 @@ test('concurrency and item are passed to p-limit', async t => {
 
 	const arraySize = 100;
 	const concurrency = 4;
-	const array = new Array(arraySize).fill(0).map((_, i) => Promise.resolve(i));
+	const array = new Array(arraySize).fill(0).map((_, index) => Promise.resolve(index));
 	const resolvedCalls = new Array(arraySize).fill(0).map(() => ({concurrency}));
 
 	await pSettle(array, {concurrency});

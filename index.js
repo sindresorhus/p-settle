@@ -2,16 +2,20 @@
 const pReflect = require('p-reflect');
 const pLimit = require('p-limit');
 
-module.exports = (iterable, options) => {
-	options = Object.assign({
-		concurrency: Infinity
-	}, options);
+const pSettle = async (promises, options) => {
+	const {concurrency} = {
+		concurrency: Infinity,
+		...options
+	};
 
-	if (!(typeof options.concurrency === 'number' && options.concurrency >= 1)) {
-		throw new TypeError(`Expected \`concurrency\` to be a number from 1 and up, got \`${options.concurrency}\` (${typeof options.concurrency})`);
+	if (!(typeof concurrency === 'number' && concurrency >= 1)) {
+		throw new TypeError(`Expected \`concurrency\` to be a number from 1 and up, got \`${concurrency}\` (${typeof concurrency})`);
 	}
 
-	const limit = pLimit(options.concurrency);
+	const limit = pLimit(concurrency);
 
-	return Promise.all(iterable.map(item => pReflect(limit(() => item))));
+	return Promise.all(promises.map(item => pReflect(limit(() => item))));
 };
+
+module.exports = pSettle;
+module.exports.default = pSettle;

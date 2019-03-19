@@ -13,15 +13,17 @@ $ npm install p-settle
 ## Usage
 
 ```js
+const {promisify} = require('util');
+const fs = require('fs');
 const pSettle = require('p-settle');
-const promisify = require('pify');
-const fs = promisify(require('fs'));
+
+const pReadFile = promisify(fs.readFile);
 
 (async () => {
 	const files = [
 		'a.txt',
 		'b.txt' // Doesn't exist
-	].map(x => fs.readFile(x, 'utf8'));
+	].map(fileName => pReadFile(fileName, 'utf8'));
 
 	console.log(await pSettle(files));
 	/*
@@ -44,19 +46,19 @@ const fs = promisify(require('fs'));
 
 ## API
 
-### pSettle(input, [options])
+### pSettle(promises, [options])
 
-Returns a `Promise` that is fulfilled when all promises in `input` are settled.
+Returns a `Promise<Object[]>` that is fulfilled when all promises in `promises` are settled.
 
-The fulfilled value is an array of objects with the following properties:
+The objects in the array have the following properties:
 
 - `isFulfilled`
 - `isRejected`
 - `value` or `reason` *(Depending on whether the promise fulfilled or rejected)*
 
-#### input
+#### promises
 
-Type: `Array<Promise|any>`
+Type: `Array<Promise<unknown>>`
 
 #### options
 
