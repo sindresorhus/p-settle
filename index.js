@@ -18,4 +18,5 @@ const pSettle = async (promises, options) => {
 };
 
 module.exports = pSettle;
+// TODO: Remove this for the next major release
 module.exports.default = pSettle;
