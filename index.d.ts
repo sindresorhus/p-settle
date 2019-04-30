@@ -25,17 +25,14 @@ declare const pSettle: {
 
 	@example
 	```
-	import {promisify} from 'util';
-	import * as fs from 'fs';
+	import {promises as fs} from 'fs';
 	import pSettle = require('p-settle');
-
-	const pReadFile = promisify(fs.readFile);
 
 	(async () => {
 		const files = [
 			'a.txt',
 			'b.txt' // Doesn't exist
-		].map(fileName => pReadFile(fileName, 'utf8'));
+		].map(fileName => fs.readFile(fileName, 'utf8'));
 
 		console.log(await pSettle(files));
 

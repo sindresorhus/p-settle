@@ -13,17 +13,14 @@ $ npm install p-settle
 ## Usage
 
 ```js
-const {promisify} = require('util');
-const fs = require('fs');
+const {promises: fs} = require('fs');
 const pSettle = require('p-settle');
-
-const pReadFile = promisify(fs.readFile);
 
 (async () => {
 	const files = [
 		'a.txt',
 		'b.txt' // Doesn't exist
-	].map(fileName => pReadFile(fileName, 'utf8'));
+	].map(fileName => fs.readFile(fileName, 'utf8'));
 
 	console.log(await pSettle(files));
 	/*
