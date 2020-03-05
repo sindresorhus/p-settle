@@ -7,22 +7,23 @@ declare namespace pSettle {
 
 		Must be an integer from 1 and up or `Infinity`.
 
+		Note: This only limits concurrency for elements that are async functions, not promises.
+
 		@default Infinity
 		*/
 		readonly concurrency?: number;
 	}
 
 	type PromiseResult<ValueType> = pReflect.PromiseResult<ValueType>;
-	type PromiseFulfilledResult<ValueType> = pReflect.PromiseFulfilledResult<
-		ValueType
-	>;
+	type PromiseFulfilledResult<ValueType> = pReflect.PromiseFulfilledResult<ValueType>;
 	type PromiseRejectedResult = pReflect.PromiseRejectedResult;
 }
 
 /**
 Settle promises concurrently and get their fulfillment value or rejection reason.
 
-@returns A promise that is fulfilled when all input `promises` are settled.
+@param array - Can contain a mix of any value, promise, and async function. Promises are awaited. Async functions are executed and awaited. The `concurrency` option only works for elements that are async functions.
+@returns A promise that is fulfilled when all promises from the `array` argument are settled.
 
 @example
 ```
@@ -52,8 +53,8 @@ import pSettle = require('p-settle');
 ```
 */
 declare function pSettle<ValueType>(
-	promises: ReadonlyArray<ValueType | PromiseLike<ValueType>>,
+	array: ReadonlyArray<ValueType | PromiseLike<ValueType> | ((...args: any[]) => PromiseLike<ValueType>)>,
 	options?: pSettle.Options
-): Promise<pSettle.PromiseResult<ValueType>[]>;
+): Promise<Array<pSettle.PromiseResult<ValueType>>>;
 
 export = pSettle;

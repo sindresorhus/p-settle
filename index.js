@@ -4,12 +4,17 @@ const pLimit = require('p-limit');
 
 module.exports = async (array, options = {}) => {
 	const {concurrency = Infinity} = options;
-
-	if (array.find(element => typeof element.then === 'function') && concurrency) {
-		throw new Error('Cannot limit concurrency for promises')
-	}
-
 	const limit = pLimit(concurrency);
 
-	return Promise.all(promises.map(item => pReflect(limit(() => item))));
+	return Promise.all(array.map(element => {
+		if (typeof element.then === 'function') { // eslint-disable-line promise/prefer-await-to-then
+			return pReflect(element);
+		}
+
+		if (typeof element === 'function') {
+			return pReflect(limit(() => element()));
+		}
+
+		return pReflect(Promise.resolve(element));
+	}));
 };

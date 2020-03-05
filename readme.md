@@ -40,9 +40,9 @@ const pSettle = require('p-settle');
 
 ## API
 
-### pSettle(promises, options?)
+### pSettle(array, options?)
 
-Returns a `Promise<Object[]>` that is fulfilled when all promises in `promises` are settled.
+Returns a `Promise<object[]>` that is fulfilled when all promises from the `array` argument are settled.
 
 The objects in the array have the following properties:
 
@@ -50,9 +50,11 @@ The objects in the array have the following properties:
 - `isRejected`
 - `value` or `reason` *(Depending on whether the promise fulfilled or rejected)*
 
-#### promises
+#### array
 
-Type: `Promise<unknown>[]`
+Type: `Array<ValueType | PromiseLike<ValueType> | ((...args: any[]) => PromiseLike<ValueType>)>`
+
+The array can contain a mix of any value, promise, and async function. Promises are awaited. Async functions are executed and awaited. The `concurrency` option only works for elements that are async functions.
 
 #### options
 
@@ -65,6 +67,8 @@ Default: `Infinity`\
 Minimum: `1`
 
 Number of concurrently pending promises.
+
+**Note:** This only limits concurrency for elements that are async functions, not promises.
 
 ## Related
 

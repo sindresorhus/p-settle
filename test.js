@@ -1,25 +1,8 @@
 import test from 'ava';
 import delay from 'delay';
-import mock from 'mock-require';
-import realPLimit from 'p-limit';
-
-let limitCalls = [];
-mock('p-limit', concurrency => {
-	const limit = realPLimit(concurrency);
-
-	const mockLimit = itemFunction => {
-		limitCalls.push({
-			concurrency,
-			item: itemFunction()
-		});
-
-		return limit(itemFunction);
-	};
-
-	return mockLimit;
-});
-
-const pSettle = mock.reRequire('.');
+import inRange from 'in-range';
+import timeSpan from 'time-span';
+import pSettle from '.';
 
 test('main', async t => {
 	t.deepEqual(
@@ -45,26 +28,46 @@ test('main', async t => {
 	);
 });
 
-test('concurrency and item are passed to p-limit', async t => {
-	limitCalls = [];
+test('concurrency option works', async t => {
+	const fixture = [
+		async () => {
+			await delay(300);
+			return 10;
+		},
+		async () => {
+			await delay(200);
+			return 20;
+		},
+		async () => {
+			await delay(100);
+			return 30;
+		}
+	];
 
-	const arraySize = 100;
-	const concurrency = 4;
-	const array = new Array(arraySize).fill(0).map((_, index) => Promise.resolve(index));
-	const resolvedCalls = new Array(arraySize).fill(0).map(() => ({concurrency}));
+	const end = timeSpan();
 
-	await pSettle(array, {concurrency});
+	t.deepEqual(
+		await pSettle(fixture, {concurrency: 1}),
+		[
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: 10
+			},
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: 20
+			},
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: 30
+			}
+		]
+	);
 
-	await limitCalls.map(limitCall => limitCall.item).forEach((item, index) => {
-		item.then(data => {
-			resolvedCalls[index].item = data;
-		});
-	});
-
-	await t.deepEqual(resolvedCalls, new Array(arraySize).fill(0).map((_, item) => ({
-		concurrency,
-		item
-	})));
+	t.true(inRange(end(), {start: 590, end: 760}));
 });
 
 test('handles empty iterable', async t => {
