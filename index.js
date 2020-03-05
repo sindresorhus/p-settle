@@ -2,21 +2,14 @@
 const pReflect = require('p-reflect');
 const pLimit = require('p-limit');
 
-const pSettle = async (promises, options) => {
-	const {concurrency} = {
-		concurrency: Infinity,
-		...options
-	};
+module.exports = async (array, options = {}) => {
+	const {concurrency = Infinity} = options;
 
-	if (!(typeof concurrency === 'number' && concurrency >= 1)) {
-		throw new TypeError(`Expected \`concurrency\` to be a number from 1 and up, got \`${concurrency}\` (${typeof concurrency})`);
+	if (array.find(element => typeof element.then === 'function') && concurrency) {
+		throw new Error('Cannot limit concurrency for promises')
 	}
 
 	const limit = pLimit(concurrency);
 
 	return Promise.all(promises.map(item => pReflect(limit(() => item))));
 };
-
-module.exports = pSettle;
-// TODO: Remove this for the next major release
-module.exports.default = pSettle;

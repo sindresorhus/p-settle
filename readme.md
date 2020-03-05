@@ -2,13 +2,11 @@
 
 > Settle promises concurrently and get their fulfillment value or rejection reason
 
-
 ## Install
 
 ```
 $ npm install p-settle
 ```
-
 
 ## Usage
 
@@ -40,10 +38,9 @@ const pSettle = require('p-settle');
 })();
 ```
 
-
 ## API
 
-### pSettle(promises, [options])
+### pSettle(promises, options?)
 
 Returns a `Promise<Object[]>` that is fulfilled when all promises in `promises` are settled.
 
@@ -55,28 +52,22 @@ The objects in the array have the following properties:
 
 #### promises
 
-Type: `Array<Promise<unknown>>`
+Type: `Promise<unknown>[]`
 
 #### options
 
-Type: `Object`
+Type: `object`
 
 ##### concurrency
 
-Type: `number`<br>
-Default: `Infinity`<br>
+Type: `number` (Integer)\
+Default: `Infinity`\
 Minimum: `1`
 
 Number of concurrently pending promises.
-
 
 ## Related
 
 - [p-reflect](https://github.com/sindresorhus/p-reflect) - Make a promise always fulfill with its actual fulfillment value or rejection reason
 - [p-map](https://github.com/sindresorhus/p-map) - Map over promises concurrently
 - [More…](https://github.com/sindresorhus/promise-fun)
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

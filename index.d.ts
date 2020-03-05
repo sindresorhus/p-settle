@@ -3,7 +3,9 @@ import * as pReflect from 'p-reflect';
 declare namespace pSettle {
 	interface Options {
 		/**
-		Number of concurrently pending promises. Minimum: `1`.
+		Number of concurrently pending promises.
+
+		Must be an integer from 1 and up or `Infinity`.
 
 		@default Infinity
 		*/
@@ -17,52 +19,41 @@ declare namespace pSettle {
 	type PromiseRejectedResult = pReflect.PromiseRejectedResult;
 }
 
-declare const pSettle: {
-	/**
-	Settle promises concurrently and get their fulfillment value or rejection reason.
+/**
+Settle promises concurrently and get their fulfillment value or rejection reason.
 
-	@returns A promise that is fulfilled when all promises in `promises` are settled.
+@returns A promise that is fulfilled when all input `promises` are settled.
 
-	@example
-	```
-	import {promises as fs} from 'fs';
-	import pSettle = require('p-settle');
+@example
+```
+import {promises as fs} from 'fs';
+import pSettle = require('p-settle');
 
-	(async () => {
-		const files = [
-			'a.txt',
-			'b.txt' // Doesn't exist
-		].map(fileName => fs.readFile(fileName, 'utf8'));
+(async () => {
+	const files = [
+		'a.txt',
+		'b.txt' // Doesn't exist
+	].map(fileName => fs.readFile(fileName, 'utf8'));
 
-		console.log(await pSettle(files));
-
-		// [
-		// 	{
-		// 		isFulfilled: true,
-		// 		isRejected: false,
-		// 		value: '🦄'
-		// 	},
-		// 	{
-		// 		isFulfilled: false,
-		// 		isRejected: true,
-		// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
-		// 	}
-		// ]
-	})();
-	```
-	*/
-	<ValueType>(
-		promises: ReadonlyArray<ValueType | PromiseLike<ValueType>>,
-		options?: pSettle.Options
-	): Promise<pSettle.PromiseResult<ValueType>[]>;
-
-	// TODO: Remove this for the next major release, refactor the whole definition to:
-	// declare function pSettle<ValueType>(
-	// 	promises: ReadonlyArray<ValueType | PromiseLike<ValueType>>,
-	// 	options?: pSettle.Options
-	// ): Promise<pSettle.PromiseResult<ValueType>[]>;
-	// export = pSettle;
-	default: typeof pSettle;
-};
+	console.log(await pSettle(files));
+	// [
+	// 	{
+	// 		isFulfilled: true,
+	// 		isRejected: false,
+	// 		value: '🦄'
+	// 	},
+	// 	{
+	// 		isFulfilled: false,
+	// 		isRejected: true,
+	// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
+	// 	}
+	// ]
+})();
+```
+*/
+declare function pSettle<ValueType>(
+	promises: ReadonlyArray<ValueType | PromiseLike<ValueType>>,
+	options?: pSettle.Options
+): Promise<pSettle.PromiseResult<ValueType>[]>;
 
 export = pSettle;
