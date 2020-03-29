@@ -73,3 +73,21 @@ test('concurrency option works', async t => {
 test('handles empty iterable', async t => {
 	t.deepEqual(await pSettle([]), []);
 });
+
+test('handles null and undefined', async t => {
+	t.deepEqual(
+		await pSettle([null, undefined]),
+		[
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: null
+			},
+			{
+				isFulfilled: true,
+				isRejected: false,
+				value: undefined
+			}
+		]
+	);
+});

@@ -7,7 +7,7 @@ module.exports = async (array, options = {}) => {
 	const limit = pLimit(concurrency);
 
 	return Promise.all(array.map(element => {
-		if (typeof element.then === 'function') { // eslint-disable-line promise/prefer-await-to-then
+		if (element && typeof element.then === 'function') { // eslint-disable-line promise/prefer-await-to-then
 			return pReflect(element);
 		}
 
