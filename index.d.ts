@@ -18,7 +18,7 @@ declare namespace pSettle {
 	type PromiseFulfilledResult<ValueType> = pReflect.PromiseFulfilledResult<ValueType>;
 	type PromiseRejectedResult = pReflect.PromiseRejectedResult;
 
-	// @TODO use the native version when TS supports it (should be in v4)
+	// TODO: Use the native version when TS supports it (should be in v4).
 	type Awaited<T> = T extends undefined ? T : T extends PromiseLike<infer U> ? U : T;
 }
 
@@ -58,6 +58,6 @@ import pSettle = require('p-settle');
 declare function pSettle<ValueType extends readonly any[]>(
 	array: ValueType,
 	options?: pSettle.Options
-): Promise<{ -readonly [P in keyof ValueType]: pSettle.PromiseResult<pSettle.Awaited<ValueType[P]>> }>;
+): Promise<{-readonly [P in keyof ValueType]: pSettle.PromiseResult<pSettle.Awaited<ValueType[P]>>}>;
 
 export = pSettle;
