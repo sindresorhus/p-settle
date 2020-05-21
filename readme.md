@@ -1,4 +1,4 @@
-# p-settle [![Build Status](https://travis-ci.org/sindresorhus/p-settle.svg?branch=master)](https://travis-ci.org/sindresorhus/p-settle)
+# p-settle [![Build Status](https://travis-ci.com/sindresorhus/p-settle.svg?branch=master)](https://travis-ci.com/github/sindresorhus/p-settle)
 
 > Settle promises concurrently and get their fulfillment value or rejection reason
 
