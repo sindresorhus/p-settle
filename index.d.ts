@@ -1,26 +1,21 @@
-import * as pReflect from 'p-reflect';
+import pReflect, {PromiseResult, PromiseFulfilledResult, PromiseRejectedResult} from 'p-reflect';
 
-declare namespace pSettle {
-	interface Options {
-		/**
-		Number of concurrently pending promises.
+type ReturnValue<T> = T extends (...args: any) => any ? ReturnType<T> : T;
 
-		Must be an integer from 1 and up or `Infinity`.
+// TODO: Use the native version when TS supports it (should be in v4).
+type Awaited<T> = T extends undefined ? T : T extends PromiseLike<infer U> ? U : T;
 
-		Note: This only limits concurrency for elements that are async functions, not promises.
+export interface Options {
+	/**
+	The number of concurrently pending promises.
 
-		@default Infinity
-		*/
-		readonly concurrency?: number;
-	}
+	Must be an integer from 1 and up or `Infinity`.
 
-	type PromiseResult<ValueType> = pReflect.PromiseResult<ValueType>;
-	type PromiseFulfilledResult<ValueType> = pReflect.PromiseFulfilledResult<ValueType>;
-	type PromiseRejectedResult = pReflect.PromiseRejectedResult;
-	type ReturnValue<T> = T extends (...args: any) => any ? ReturnType<T> : T;
+	Note: This only limits concurrency for elements that are async functions, not promises.
 
-	// TODO: Use the native version when TS supports it (should be in v4).
-	type Awaited<T> = T extends undefined ? T : T extends PromiseLike<infer U> ? U : T;
+	@default Infinity
+	*/
+	readonly concurrency?: number;
 }
 
 /**
@@ -31,34 +26,32 @@ Settle promises concurrently and get their fulfillment value or rejection reason
 
 @example
 ```
-import {promises as fs} from 'fs';
-import pSettle = require('p-settle');
+import fs from 'node:fs/promises';
+import pSettle from 'p-settle';
 
-(async () => {
-	const files = [
-		'a.txt',
-		'b.txt' // Doesn't exist
-	].map(fileName => fs.readFile(fileName, 'utf8'));
+const files = [
+	'a.txt',
+	'b.txt' // Doesn't exist
+].map(fileName => fs.readFile(fileName, 'utf8'));
 
-	console.log(await pSettle(files));
-	// [
-	// 	{
-	// 		isFulfilled: true,
-	// 		isRejected: false,
-	// 		value: '🦄'
-	// 	},
-	// 	{
-	// 		isFulfilled: false,
-	// 		isRejected: true,
-	// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
-	// 	}
-	// ]
-})();
+console.log(await pSettle(files));
+// [
+// 	{
+// 		isFulfilled: true,
+// 		isRejected: false,
+// 		value: '🦄'
+// 	},
+// 	{
+// 		isFulfilled: false,
+// 		isRejected: true,
+// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
+// 	}
+// ]
 ```
 */
-declare function pSettle<ValueType extends readonly any[]>(
+export default function pSettle<ValueType extends readonly any[]>(
 	array: ValueType,
-	options?: pSettle.Options
-): Promise<{-readonly [P in keyof ValueType]: pSettle.PromiseResult<pSettle.Awaited<pSettle.ReturnValue<ValueType[P]>>>}>;
+	options?: Options
+): Promise<{-readonly [P in keyof ValueType]: PromiseResult<Awaited<ReturnValue<ValueType[P]>>>}>;
 
-export = pSettle;
+export {PromiseResult} from 'p-reflect';

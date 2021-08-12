@@ -11,31 +11,29 @@ $ npm install p-settle
 ## Usage
 
 ```js
-const {promises: fs} = require('fs');
-const pSettle = require('p-settle');
+import fs from 'node:fs/promises';
+import pSettle from 'p-settle';
 
-(async () => {
-	const files = [
-		'a.txt',
-		'b.txt' // Doesn't exist
-	].map(fileName => fs.readFile(fileName, 'utf8'));
+const files = [
+	'a.txt',
+	'b.txt' // Doesn't exist
+].map(fileName => fs.readFile(fileName, 'utf8'));
 
-	console.log(await pSettle(files));
-	/*
-	[
-		{
-			isFulfilled: true,
-			isRejected: false,
-			value: '🦄'
-		},
-		{
-			isFulfilled: false,
-			isRejected: true,
-			reason: [Error: ENOENT: no such file or directory, open 'b.txt']
-		}
-	]
-	*/
-})();
+console.log(await pSettle(files));
+/*
+[
+	{
+		isFulfilled: true,
+		isRejected: false,
+		value: '🦄'
+	},
+	{
+		isFulfilled: false,
+		isRejected: true,
+		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
+	}
+]
+*/
 ```
 
 ## API
@@ -66,7 +64,7 @@ Type: `number` (Integer)\
 Default: `Infinity`\
 Minimum: `1`
 
-Number of concurrently pending promises.
+The number of concurrently pending promises.
 
 **Note:** This only limits concurrency for elements that are async functions, not promises.
 

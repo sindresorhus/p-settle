@@ -10,8 +10,10 @@
 		"email": "sindresorhus@gmail.com",
 		"url": "https://sindresorhus.com"
 	},
+	"type": "module",
+	"exports": "./index.js",
 	"engines": {
-		"node": ">=10"
+		"node": "^12.20.0 || ^14.13.1 || >=16.0.0"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -42,15 +44,15 @@
 		"bluebird"
 	],
 	"dependencies": {
-		"p-limit": "^2.2.2",
-		"p-reflect": "^2.1.0"
+		"p-limit": "^4.0.0",
+		"p-reflect": "^3.0.0"
 	},
 	"devDependencies": {
-		"ava": "^1.4.1",
-		"delay": "^4.1.0",
-		"in-range": "^2.0.0",
-		"time-span": "^3.1.0",
-		"tsd": "^0.11.0",
-		"xo": "^0.30.0"
+		"ava": "^3.15.0",
+		"delay": "^5.0.0",
+		"in-range": "^3.0.0",
+		"time-span": "^5.0.0",
+		"tsd": "^0.17.0",
+		"xo": "^0.44.0"
 	}
 }

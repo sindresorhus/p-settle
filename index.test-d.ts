@@ -1,10 +1,9 @@
 import {expectType} from 'tsd';
-import pSettle = require('.');
-import {PromiseResult} from '.';
+import pSettle, {PromiseResult} from './index.js';
 
 expectType<Promise<Array<PromiseResult<number>>>>(pSettle([1, Promise.resolve(2)]));
 expectType<Promise<Array<PromiseResult<number>>>>(
-	pSettle([1, Promise.resolve(2)], {concurrency: 1})
+	pSettle([1, Promise.resolve(2)], {concurrency: 1}),
 );
 expectType<Promise<Array<PromiseResult<number>>>>(pSettle([async () => 2]));
 

@@ -1,9 +1,8 @@
-'use strict';
-const pReflect = require('p-reflect');
-const pLimit = require('p-limit');
+import pReflect from 'p-reflect';
+import pLimit from 'p-limit';
 
-module.exports = async (array, options = {}) => {
-	const {concurrency = Infinity} = options;
+export default async function pSettle(array, options = {}) {
+	const {concurrency = Number.POSITIVE_INFINITY} = options;
 	const limit = pLimit(concurrency);
 
 	return Promise.all(array.map(element => {
@@ -17,4 +16,4 @@ module.exports = async (array, options = {}) => {
 
 		return pReflect(Promise.resolve(element));
 	}));
-};
+}

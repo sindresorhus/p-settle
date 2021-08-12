@@ -2,7 +2,7 @@ import test from 'ava';
 import delay from 'delay';
 import inRange from 'in-range';
 import timeSpan from 'time-span';
-import pSettle from '.';
+import pSettle from './index.js';
 
 test('main', async t => {
 	t.deepEqual(
@@ -12,19 +12,19 @@ test('main', async t => {
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 1
+				value: 1,
 			},
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 2
+				value: 2,
 			},
 			{
 				isFulfilled: false,
 				isRejected: true,
-				reason: 3
-			}
-		]
+				reason: 3,
+			},
+		],
 	);
 });
 
@@ -41,7 +41,7 @@ test('concurrency option works', async t => {
 		async () => {
 			await delay(100);
 			return 30;
-		}
+		},
 	];
 
 	const end = timeSpan();
@@ -52,19 +52,19 @@ test('concurrency option works', async t => {
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 10
+				value: 10,
 			},
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 20
+				value: 20,
 			},
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 30
-			}
-		]
+				value: 30,
+			},
+		],
 	);
 
 	t.true(inRange(end(), {start: 590, end: 760}));
@@ -81,13 +81,13 @@ test('handles null and undefined', async t => {
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: null
+				value: null,
 			},
 			{
 				isFulfilled: true,
 				isRejected: false,
-				value: undefined
-			}
-		]
+				value: undefined,
+			},
+		],
 	);
 });
