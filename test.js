@@ -100,7 +100,7 @@ test('handles null and undefined', async t => {
 	);
 });
 
-test('compatible-with-PromiseSettledResult', async t => {
+test('compatible with PromiseSettledResult', async t => {
 	const result = await pSettle([delay(100, {value: 1}), 2, Promise.reject(new Error('3'))], {concurrency: 2});
 	t.truthy(result.every(item => item.status === 'fulfilled' || item.status === 'rejected'));
 	t.truthy(result.every(item => (item.status === 'fulfilled' ? 'value' : 'reason') in item));
