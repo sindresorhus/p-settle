@@ -2,6 +2,7 @@ import pReflect, {PromiseResult, PromiseFulfilledResult, PromiseRejectedResult} 
 
 type ReturnValue<T> = T extends (...args: any) => any ? ReturnType<T> : T;
 
+// TODO: Use the native version in the next major version of this package.
 type Awaited<T> = T extends undefined ? T : T extends PromiseLike<infer U> ? U : T;
 
 export interface Options {
