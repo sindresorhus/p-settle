@@ -77,15 +77,11 @@ This is a type guard for TypeScript users.
 
 This is useful since `await pSettle(promiseArray)` always returns a `PromiseResult[]`. This function can be used to determine whether `PromiseResult` is `PromiseFulfilledResult` or `PromiseRejectedResult`.
 
-This is exported from [p-reflect](https://github.com/sindresorhus/p-reflect)
-
 ### isRejected(object)
 
 This is a type guard for TypeScript users.
 
 This is useful since `await pSettle(promiseArray)` always returns a `PromiseResult[]`. This function can be used to determine whether `PromiseResult` is `PromiseRejectedResult` or `PromiseFulfilledResult`.
-
-This is exported from [p-reflect](https://github.com/sindresorhus/p-reflect)
 
 ## Related
 
