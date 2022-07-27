@@ -23,14 +23,16 @@ console.log(await pSettle(files));
 /*
 [
 	{
+		status: 'fulfilled',
+		value: '🦄',
 		isFulfilled: true,
 		isRejected: false,
-		value: '🦄'
 	},
 	{
+		status: 'rejected',
+		reason: [Error: ENOENT: no such file or directory, open 'b.txt'],
 		isFulfilled: false,
 		isRejected: true,
-		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
 	}
 ]
 */
@@ -44,9 +46,10 @@ Returns a `Promise<object[]>` that is fulfilled when all promises from the `arra
 
 The objects in the array have the following properties:
 
+- `status` *(`'fulfilled'` or `'rejected'`, depending on how the promise resolved)*
+- `value` or `reason` *(Depending on whether the promise fulfilled or rejected)*
 - `isFulfilled`
 - `isRejected`
-- `value` or `reason` *(Depending on whether the promise fulfilled or rejected)*
 
 #### array
 
@@ -67,6 +70,22 @@ Minimum: `1`
 The number of concurrently pending promises.
 
 **Note:** This only limits concurrency for elements that are async functions, not promises.
+
+### isFulfilled(object)
+
+This is a type guard for TypeScript users.
+
+This is useful since `await pSettle(promiseArray)` always returns a `PromiseResult[]`. This function can be used to determine whether `PromiseResult` is `PromiseFulfilledResult` or `PromiseRejectedResult`.
+
+This is exported from [p-reflect](https://github.com/sindresorhus/p-reflect)
+
+### isRejected(object)
+
+This is a type guard for TypeScript users.
+
+This is useful since `await pSettle(promiseArray)` always returns a `PromiseResult[]`. This function can be used to determine whether `PromiseResult` is `PromiseRejectedResult` or `PromiseFulfilledResult`.
+
+This is exported from [p-reflect](https://github.com/sindresorhus/p-reflect)
 
 ## Related
 
