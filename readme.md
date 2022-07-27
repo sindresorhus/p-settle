@@ -4,8 +4,8 @@
 
 ## Install
 
-```
-$ npm install p-settle
+```sh
+npm install p-settle
 ```
 
 ## Usage

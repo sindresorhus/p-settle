@@ -6,7 +6,7 @@ export default async function pSettle(array, options = {}) {
 	const limit = pLimit(concurrency);
 
 	return Promise.all(array.map(element => {
-		if (element && typeof element.then === 'function') { // eslint-disable-line promise/prefer-await-to-then
+		if (element && typeof element.then === 'function') {
 			return pReflect(element);
 		}
 
