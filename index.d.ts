@@ -2,7 +2,7 @@ import pReflect, {PromiseResult, PromiseFulfilledResult, PromiseRejectedResult} 
 
 type ReturnValue<T> = T extends (...args: any) => any ? ReturnType<T> : T;
 
-// TODO: Use the native version when TS supports it (should be in v4).
+// TODO: Use the native version in the next major version of this package.
 type Awaited<T> = T extends undefined ? T : T extends PromiseLike<infer U> ? U : T;
 
 export interface Options {
@@ -37,14 +37,16 @@ const files = [
 console.log(await pSettle(files));
 // [
 // 	{
+// 		status: 'fulfilled',
+// 		value: '🦄',
 // 		isFulfilled: true,
 // 		isRejected: false,
-// 		value: '🦄'
 // 	},
 // 	{
+// 		status: 'rejected',
+// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt'],
 // 		isFulfilled: false,
 // 		isRejected: true,
-// 		reason: [Error: ENOENT: no such file or directory, open 'b.txt']
 // 	}
 // ]
 ```
@@ -54,4 +56,4 @@ export default function pSettle<ValueType extends readonly any[]>(
 	options?: Options
 ): Promise<{-readonly [P in keyof ValueType]: PromiseResult<Awaited<ReturnValue<ValueType[P]>>>}>;
 
-export {PromiseResult} from 'p-reflect';
+export {PromiseResult, isFulfilled, isRejected} from 'p-reflect';

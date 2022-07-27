@@ -10,19 +10,22 @@ test('main', async t => {
 		await pSettle([delay(100, {value: 1}), 2, Promise.reject(3)]),
 		[
 			{
-				isFulfilled: true,
-				isRejected: false,
+				status: 'fulfilled',
 				value: 1,
-			},
-			{
 				isFulfilled: true,
 				isRejected: false,
-				value: 2,
 			},
 			{
+				status: 'fulfilled',
+				value: 2,
+				isFulfilled: true,
+				isRejected: false,
+			},
+			{
+				status: 'rejected',
+				reason: 3,
 				isFulfilled: false,
 				isRejected: true,
-				reason: 3,
 			},
 		],
 	);
@@ -50,19 +53,22 @@ test('concurrency option works', async t => {
 		await pSettle(fixture, {concurrency: 1}),
 		[
 			{
-				isFulfilled: true,
-				isRejected: false,
+				status: 'fulfilled',
 				value: 10,
-			},
-			{
 				isFulfilled: true,
 				isRejected: false,
+			},
+			{
+				status: 'fulfilled',
 				value: 20,
-			},
-			{
 				isFulfilled: true,
 				isRejected: false,
+			},
+			{
+				status: 'fulfilled',
 				value: 30,
+				isFulfilled: true,
+				isRejected: false,
 			},
 		],
 	);
@@ -79,15 +85,23 @@ test('handles null and undefined', async t => {
 		await pSettle([null, undefined]),
 		[
 			{
+				status: 'fulfilled',
+				value: null,
 				isFulfilled: true,
 				isRejected: false,
-				value: null,
 			},
 			{
+				status: 'fulfilled',
+				value: undefined,
 				isFulfilled: true,
 				isRejected: false,
-				value: undefined,
 			},
 		],
 	);
+});
+
+test('compatible with PromiseSettledResult', async t => {
+	const result = await pSettle([delay(100, {value: 1}), 2, Promise.reject(new Error('3'))], {concurrency: 2});
+	t.truthy(result.every(item => item.status === 'fulfilled' || item.status === 'rejected'));
+	t.truthy(result.every(item => (item.status === 'fulfilled' ? 'value' : 'reason') in item));
 });
