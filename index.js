@@ -17,3 +17,5 @@ export default async function pSettle(array, options = {}) {
 		return pReflect(Promise.resolve(element));
 	}));
 }
+
+export {isFulfilled, isRejected} from 'p-reflect';
