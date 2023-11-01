@@ -1,6 +1,6 @@
 # p-settle
 
-> Settle promises concurrently and get their fulfillment value or rejection reason
+> Settle promises concurrently and get their fulfillment value or rejection reason with optional limited concurrency
 
 ## Install
 

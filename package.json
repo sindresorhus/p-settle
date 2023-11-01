@@ -1,7 +1,7 @@
 {
 	"name": "p-settle",
 	"version": "5.1.1",
-	"description": "Settle promises concurrently and get their fulfillment value or rejection reason",
+	"description": "Settle promises concurrently and get their fulfillment value or rejection reason with optional limited concurrency",
 	"license": "MIT",
 	"repository": "sindresorhus/p-settle",
 	"funding": "https://github.com/sponsors/sindresorhus",
