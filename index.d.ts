@@ -90,16 +90,16 @@ console.log(await pSettle(files, {
 ```
 */
 
-// Overload without mapper - preserves existing behavior
-export default function pSettle<ValueType extends readonly any[]>(
-	array: ValueType,
-	options?: Options
-): Promise<{-readonly [P in keyof ValueType]: PromiseResult<Awaited<ReturnValue<ValueType[P]>>>}>;
-
-// Overload with mapper - new functionality
+// Overload with mapper
 export default function pSettle<T, R>(
 	array: readonly T[],
 	options: Options<T, R> & {mapper: (element: T, index: number) => R | PromiseLike<R>}
 ): Promise<PromiseResult<Awaited<R>>[]>;
+
+// Overload without mapper - preserves tuple types
+export default function pSettle<ValueType extends readonly any[]>(
+	array: ValueType,
+	options?: Options
+): Promise<{-readonly [P in keyof ValueType]: PromiseResult<Awaited<ReturnValue<ValueType[P]>>>}>;
 
 export {PromiseResult, isFulfilled, isRejected} from 'p-reflect';

@@ -9,3 +9,15 @@ expectType<Promise<Array<PromiseResult<number>>>>(pSettle([async () => 2]));
 
 expectType<Promise<[PromiseResult<number>, PromiseResult<string>]>>(pSettle([1, '2']));
 expectType<Promise<[PromiseResult<string>, PromiseResult<number>]>>(pSettle([Promise.resolve('1'), Promise.resolve(2)]));
+
+expectType<Promise<Array<PromiseResult<number>>>>(
+	pSettle(['a.txt', 'b.txt'], {
+		mapper: (filename) => filename.indexOf('a'),
+	}),
+);
+expectType<Promise<Array<PromiseResult<number>>>>(
+	pSettle(['a.txt', 'b.txt'], {
+		mapper: (filename) => filename.indexOf('a'),
+		concurrency: 2,
+	}),
+);
